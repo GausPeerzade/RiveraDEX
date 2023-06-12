@@ -68,4 +68,52 @@ contract Exchange is ERC20 {
 
         return (ethAmount, reveraTokenAmount);
     }
+
+    function getAmountOfTokens(
+        uint inputAmount,
+        uint inputReserve,
+        uint outputReserve
+    ) public pure returns (uint) {
+        require(inputReserve > 0 && outputReserve > 0, "invalid reserve");
+
+        uint inputAmountWithFee = inputAmount * 99;
+
+        uint numerator = inputAmountWithFee * outputReserve;
+        uint denominator = (inputReserve * 100) + inputAmountWithFee;
+        return numerator / denominator;
+    }
+
+    function ethToRiveraToken(uint _minTokens) public payable {
+        uint tokenReserve = getReserve();
+
+        uint tokenBought = getAmountOfTokens(
+            msg.value,
+            address(this).balance - msg.value,
+            tokenReserve
+        );
+
+        require(tokenBought >= _minTokens, "insufficient output amount");
+
+        ERC20(RiveraTokenAdress).transfer(msg.sender, tokenBought);
+    }
+
+    function riveraTokenToEth(uint _tokenSold, uint _minEth) public {
+        uint256 tokenReserve = getReserve();
+
+        uint ethBought = getAmountOfTokens(
+            _tokenSold,
+            tokenReserve,
+            address(this).balance
+        );
+
+        require(ethBought >= _minEth, "insufficient output amount");
+
+        ERC20(RiveraTokenAdress).transferFrom(
+            msg.sender,
+            address(this),
+            _tokenSold
+        );
+
+        payable(msg.sender).transfer(ethBought);
+    }
 }

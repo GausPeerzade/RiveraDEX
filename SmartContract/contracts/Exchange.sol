@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.18;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract Exchange is ERC20 {
-    address public RiveraTokenAdress;
+    address public RiveraTokenAdress =
+        address(0x9207280fCd65c8CFae30d07DAe85B083Cb1E224e);
 
     constructor(address _token) ERC20("RiveraTokenLP", "RTP") {
         require(_token != address(0), "Token address passed is null");

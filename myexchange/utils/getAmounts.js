@@ -28,18 +28,18 @@ export const getEtherBalance = async (provider, address, contract = false) => {
 };
 
 /**
- * getCDTokensBalance: Retrieves the Crypto Dev tokens in the account
+ * getRTTokensBalance: Retrieves the Rivera tokens in the account
  * of the provided `address`
  */
-export const getCDTokensBalance = async (provider, address) => {
+export const getRTTokensBalance = async (provider, address) => {
     try {
         const tokenContract = new Contract(
             TOKEN_CONTRACT_ADDRESS,
             TOKEN_CONTRACT_ABI,
             provider
         );
-        const balanceOfCryptoDevTokens = await tokenContract.balanceOf(address);
-        return balanceOfCryptoDevTokens;
+        const balanceOfRiveraTokens = await tokenContract.balanceOf(address);
+        return balanceOfRiveraTokens;
     } catch (err) {
         console.error(err);
     }
@@ -64,10 +64,10 @@ export const getLPTokensBalance = async (provider, address) => {
 };
 
 /**
- * getReserveOfCDTokens: Retrieves the amount of CD tokens in the
+ * getReserveOfRTTokens: Retrieves the amount of RT tokens in the
  * exchange contract address
  */
-export const getReserveOfCDTokens = async (provider) => {
+export const getReserveOfRTTokens = async (provider) => {
     try {
         const exchangeContract = new Contract(
             EXCHANGE_CONTRACT_ADDRESS,
